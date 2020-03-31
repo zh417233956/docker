@@ -1,0 +1,24 @@
+version: '3'
+
+networks:
+  default:
+    external:
+      name: traefik-network
+
+services:
+  jenkins.test:
+    build: ./image/jenkins/
+    privileged: true
+    volumes:
+      - volume_jenkins:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+      - /lib64/libdevmapper.so.1.02:/usr/lib/libdevmapper.so.1.02
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.jenkins.rule=Host(`jenkins.test`)
+      - traefik.http.routers.jenkins.entrypoints=http
+      - traefik.http.services.jenkins.loadbalancer.server.port=8080
+
+volumes:
+  volume_jenkins:

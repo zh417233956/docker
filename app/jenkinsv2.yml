@@ -7,7 +7,7 @@ networks:
 
 services:
   jenkins.test:
-    build: ./image/jenkins/
+    build: ./image/jenkinsv2/
     privileged: true
     volumes:
       - volume_jenkins:/var/jenkins_home
